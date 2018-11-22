@@ -21,7 +21,7 @@
         %span.p-summary> #{Formatter.instance.format_spoiler(status, autoplay: prefers_autoplay?)}&nbsp;
         %button.status__content__spoiler-link= t('statuses.show_more')
     .e-content
-      = Formatter.instance.format(status, custom_emojify: true, autoplay: prefers_autoplay?)
+      = Formatter.instance.format(status, custom_emojify: true, autoplay: prefers_autoplay?, nyaize: status.account.cat)
       - if status.preloadable_poll
         = render_poll_component(status)
 
