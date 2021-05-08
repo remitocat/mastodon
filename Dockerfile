@@ -73,7 +73,7 @@ COPY Gemfile* package.json yarn.lock /opt/mastodon/
 RUN cd /opt/mastodon && \
   bundle config set deployment 'true' && \
   bundle config set without 'development test' && \
-	bundle install --full-index -j$(nproc) && \
+	bundle install -j$(nproc) && \
 	yarn install --pure-lockfile
 
 FROM ubuntu:20.04
