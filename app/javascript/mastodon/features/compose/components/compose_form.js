@@ -4,6 +4,7 @@ import Button from '../../../components/button';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import PropTypes from 'prop-types';
 import ReplyIndicatorContainer from '../containers/reply_indicator_container';
+import QuoteIndicatorContainer from '../containers/quote_indicator_container';
 import AutosuggestTextarea from '../../../components/autosuggest_textarea';
 import AutosuggestInput from '../../../components/autosuggest_input';
 import PollButtonContainer from '../containers/poll_button_container';
@@ -86,7 +87,7 @@ class ComposeForm extends ImmutablePureComponent {
     const fulltext = this.getFulltextForCharacterCounting();
     const isOnlyWhitespace = fulltext.length !== 0 && fulltext.trim().length === 0;
 
-    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 500 || (isOnlyWhitespace && !anyMedia));
+    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 1000 || (isOnlyWhitespace && !anyMedia));
   }
 
   handleSubmit = () => {
@@ -201,6 +202,7 @@ class ComposeForm extends ImmutablePureComponent {
         <WarningContainer />
 
         <ReplyIndicatorContainer />
+        <QuoteIndicatorContainer />
 
         <div className={`spoiler-input ${this.props.spoiler ? 'spoiler-input--visible' : ''}`} ref={this.setRef}>
           <AutosuggestInput
@@ -249,7 +251,7 @@ class ComposeForm extends ImmutablePureComponent {
             <PrivacyDropdownContainer />
             <SpoilerButtonContainer />
           </div>
-          <div className='character-counter__wrapper'><CharacterCounter max={500} text={this.getFulltextForCharacterCounting()} /></div>
+          <div className='character-counter__wrapper'><CharacterCounter max={1000} text={this.getFulltextForCharacterCounting()} /></div>
         </div>
 
         <div className='compose-form__publish'>
