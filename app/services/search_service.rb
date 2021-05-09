@@ -35,7 +35,7 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    definition = parsed_query.apply(StatusesIndex).order(id: :desc)
 
     if @options[:account_id].present?
       definition = definition.filter(term: { account_id: @options[:account_id] })
@@ -72,7 +72,7 @@ class SearchService < BaseService
   end
 
   def url_query?
-    @resolve && @query =~ /\Ahttps?:\/\//
+    @resolve && /\Ahttps?:\/\//.match?(@query)
   end
 
   def url_resource_results
@@ -124,6 +124,6 @@ class SearchService < BaseService
   end
 
   def parsed_query
-    SearchQueryTransformer.new.apply(SearchQueryParser.new.parse(@query))
+    SearchQueryTransformer.new.apply(SearchQueryParser.new.parse(@query.gsub(/(　)/," ")))
   end
 end
