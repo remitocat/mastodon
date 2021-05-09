@@ -6,9 +6,8 @@ FROM docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VER}
 ARG ELASTIC_VER
 ARG SUDACHI_PLUGIN_VER
 
-RUN curl -OL https://object-storage.tyo2.conoha.io/v1/nc_2520839e1f9641b08211a5c85243124a/sudachi/sudachi-dictionary-20190308-core.zip && \
-    curl -OL https://object-storage.tyo2.conoha.io/v1/nc_2520839e1f9641b08211a5c85243124a/sudachi/sudachi-dictionary-20190308-full.zip &&  \
-    unzip -o -d config/sudachi -j  'sudachi-dictionary*.zip'  && \
-    rm -f sudachi-dictionary*.zip && \
+RUN wget https://github.com/WorksApplications/Sudachi/releases/download/v0.1.0/sudachi-0.1.0-dictionary-full.zip && \
+    unzip -o -d config/sudachi -j  'sudachi-0.1.0-dictionary-full.zip'  && \
+    rm -f sudachi-0.1.0-dictionary-full.zip && \
     bin/elasticsearch-plugin install https://github.com/WorksApplications/elasticsearch-sudachi/releases/download/v${ELASTIC_VER}-${SUDACHI_PLUGIN_VER}/analysis-sudachi-${ELASTIC_VER}-${SUDACHI_PLUGIN_VER}.zip && \
     bin/elasticsearch-plugin install analysis-icu
