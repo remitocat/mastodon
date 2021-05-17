@@ -83,12 +83,72 @@ services:
       - db
       - redis
 
-  sidekiq:
+  sidekiq_default:
     build: .
     image: tootsuite/mastodon
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -q default
+    depends_on:
+      - db
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_push:
+    build: .
+    image: tootsuite/mastodon
+    restart: always
+    env_file: .env.production
+    command: bundle exec sidekiq -q push
+    depends_on:
+      - db
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_pull:
+    build: .
+    image: tootsuite/mastodon
+    restart: always
+    env_file: .env.production
+    command: bundle exec sidekiq -q pull
+    depends_on:
+      - db
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_mailers:
+    build: .
+    image: tootsuite/mastodon
+    restart: always
+    env_file: .env.production
+    command: bundle exec sidekiq -q mailers
+    depends_on:
+      - db
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./public/system:/mastodon/public/system
+
+  sidekiq_scheduler:
+    build: .
+    image: tootsuite/mastodon
+    restart: always
+    env_file: .env.production
+    command: bundle exec sidekiq -q scheduler
     depends_on:
       - db
       - redis
