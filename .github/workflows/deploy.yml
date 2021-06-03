@@ -17,10 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          mkdir -p ~/.ssh/
-          echo "$PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -oStrictHostKeyChecking=no $USERNAME@$HOST -i ~/.ssh/id_rsa -p $PORT
+          echo "$PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          ssh -oStrictHostKeyChecking=no ${USERNAME}@${HOST} -i ./private_key -p ${PORT}
           cd mastodon && git fetch origin && git pull origin chillout-chat/main
           docker-compose build
           docker-compose run --rm web rails db:migrate
