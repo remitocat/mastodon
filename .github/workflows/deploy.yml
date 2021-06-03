@@ -2,9 +2,9 @@ name: Deploy
 
 on:
   push:
-    branches: [ remitocat/main ]
+    branches: [ chillout-chat/main ]
   pull_request:
-    branches: [ remitocat/main ]
+    branches: [ chillout-chat/main ]
 
 env:
   PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
