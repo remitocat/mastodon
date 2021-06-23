@@ -222,7 +222,7 @@ Rails.application.routes.draw do
         post :stop_delivery
       end
     end
-  
+
     resources :rules
 
     resources :reports, only: [:index, :show] do
