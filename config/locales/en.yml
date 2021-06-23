@@ -344,7 +344,7 @@ en:
       enable: Enable
       enabled: Enabled
       enabled_msg: Successfully enabled that emoji
-      image_hint: PNG up to 50KB
+      image_hint: PNG up to 2MB
       list: List
       listed: Listed
       new:
@@ -1375,6 +1375,7 @@ en:
     contrast: Mastodon (High contrast)
     default: Mastodon (Dark)
     mastodon-light: Mastodon (Light)
+    tropical: Tropical
   time:
     formats:
       default: "%b %d, %Y, %H:%M"

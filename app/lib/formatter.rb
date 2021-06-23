@@ -26,7 +26,8 @@ class Formatter
 
     unless status.local?
       html = reformat(raw_content)
-      html = encode_custom_emojis(html, status.emojis, options[:autoplay]) if options[:custom_emojify]
+      html = encode_custom_emojis(html, status.emojis + status.avatar_emojis, options[:autoplay]) if options[:custom_emojify]
+      html = nyaize(html) if options[:nyaize]
       return html.html_safe # rubocop:disable Rails/OutputSafety
     end
 
@@ -36,11 +37,24 @@ class Formatter
     html = raw_content
     html = "RT @#{prepend_reblog} #{html}" if prepend_reblog
     html = encode_and_link_urls(html, linkable_accounts)
-    html = encode_custom_emojis(html, status.emojis, options[:autoplay]) if options[:custom_emojify]
+    html = encode_custom_emojis(html, status.emojis + status.avatar_emojis, options[:autoplay]) if options[:custom_emojify]
     html = simple_format(html, {}, sanitize: false)
+    html = quotify(html, status) if status.quote? && !options[:escape_quotify]
+    html = nyaize(html) if options[:nyaize]
     html = html.delete("\n")
 
     html.html_safe # rubocop:disable Rails/OutputSafety
+  end
+
+  def format_in_quote(status, **options)
+    html = format(status)
+    return '' if html.empty?
+    doc = Nokogiri::HTML.parse(html, nil, 'utf-8')
+    html = doc.css('body')[0].inner_html
+    html.sub!(/^<p>(.+)<\/p>$/, '\1')
+    html = Sanitize.clean(html).delete("\n").truncate(150)
+    html = encode_custom_emojis(html, status.emojis) if options[:custom_emojify]
+    html.html_safe
   end
 
   def reformat(html)
@@ -68,7 +82,7 @@ class Formatter
 
   def format_spoiler(status, **options)
     html = encode(status.spoiler_text)
-    html = encode_custom_emojis(html, status.emojis, options[:autoplay])
+    html = encode_custom_emojis(html, status.emojis + status.avatar_emojis, options[:autoplay])
     html.html_safe # rubocop:disable Rails/OutputSafety
   end
 
@@ -190,6 +204,16 @@ class Formatter
     html
   end
   # rubocop:enable Metrics/BlockNesting
+
+  def quotify(html, status)
+    url = ActivityPub::TagManager.instance.url_for(status.quote)
+    link = encode_and_link_urls(url)
+    html.sub(/(<[^>]+>)\z/, "<span class=\"quote-inline\"><br/>QT: #{link}</span>\\1")
+  end
+
+  def nyaize(html)
+    html.gsub(/な/, "にゃ").gsub(/ナ/, "ニャ").gsub(/ﾅ/, "ﾆｬ").gsub(/[나-낳]/){|c|(c.ord + '냐'.ord - '나'.ord).chr}
+  end
 
   def rewrite(text, entities)
     text = text.to_s
