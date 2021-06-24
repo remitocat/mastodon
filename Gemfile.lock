@@ -365,7 +365,7 @@ GEM
       time
     net-http (0.1.1)
       net-protocol
-      uri (= 0.10.1)
+      uri
     net-ldap (0.17.0)
     net-protocol (0.1.0)
     net-scp (3.0.0)
