@@ -365,7 +365,7 @@ GEM
       time
     net-http (0.1.1)
       net-protocol
-      uri
+      uri (= 0.10.1)
     net-ldap (0.17.0)
     net-protocol (0.1.0)
     net-scp (3.0.0)
@@ -801,7 +801,6 @@ DEPENDENCIES
   tty-prompt (~> 0.23)
   twitter-text (~> 3.1.0)
   tzinfo-data (~> 1.2021)
-  uri (~> 0.10.1)
   webauthn (~> 3.0.0.alpha1)
   webmock (~> 3.13)
   webpacker (~> 5.4)
