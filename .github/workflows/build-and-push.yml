@@ -6,7 +6,7 @@ on:
       - chillout-chat/main
 
 jobs:
-  build_and_push:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
