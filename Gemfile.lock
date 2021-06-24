@@ -801,6 +801,7 @@ DEPENDENCIES
   tty-prompt (~> 0.23)
   twitter-text (~> 3.1.0)
   tzinfo-data (~> 1.2021)
+  uri (~> 0.10.0)
   webauthn (~> 3.0.0.alpha1)
   webmock (~> 3.13)
   webpacker (~> 5.4)
